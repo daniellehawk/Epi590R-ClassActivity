@@ -1,6 +1,7 @@
 library(tidyverse)
 library(gtsummary)
 
+
 # Load and clean data
 nlsy_cols <- c(
   "glasses", "eyesight", "sleep_wkdy", "sleep_wknd",
@@ -30,40 +31,38 @@ tbl_summary(
   )
 )
 
-# add labels for the variables and for the "missing" category
+# Exercise 3
 tbl_summary(
   nlsy,
   by = sex_cat,
   include = c(
-    sex_cat, race_eth_cat, region_cat,
-    eyesight_cat, glasses, age_bir
+    region_cat,sex_cat, race_eth_cat, income, sleep_wkdy, sleep_wknd
   ),
   label = list(
-    race_eth_cat ~ "Race/ethnicity",
     region_cat ~ "Region",
-    eyesight_cat ~ "Eyesight",
-    glasses ~ "Wears glasses",
-    age_bir ~ "Age at first birth"
+    race_eth_cat ~ "Race/Ethnicity",
+    income ~ "Income",
+    sleep_wkdy ~ "Sleep on the Weekday",
+    sleep_wknd ~ "Sleep on the weekend"
   ),
-  missing_text = "Missing"
-)
+  missing_text = "Missing")
+
 
 # add p-values, a total column, bold labels, and remove the footnote
 tbl_summary(
-  nlsy,
-  by = sex_cat,
-  include = c(
-    sex_cat, race_eth_cat,
-    eyesight_cat, glasses, age_bir
-  ),
-  label = list(
-    race_eth_cat ~ "Race/ethnicity",
-    eyesight_cat ~ "Eyesight",
-    glasses ~ "Wears glasses",
-    age_bir ~ "Age at first birth"
-  ),
-  missing_text = "Missing"
-) |>
+	nlsy,
+	by = sex_cat,
+	include = c(
+		region_cat,sex_cat, race_eth_cat, income, sleep_wkdy, sleep_wknd
+	),
+	label = list(
+		region_cat ~ "Region",
+		race_eth_cat ~ "Race/Ethnicity",
+		income ~ "Income",
+		sleep_wkdy ~ "Sleep on the Weekday",
+		sleep_wknd ~ "Sleep on the weekend"
+	),
+	missing_text = "Missing") |>
   # change the test used to compare sex_cat groups
   add_p(test = list(
     all_continuous() ~ "t.test",
@@ -76,5 +75,43 @@ tbl_summary(
   modify_footnote(update = everything() ~ NA) |>
   # replace the column headers and make them bold
   modify_header(label = "**Variable**", p.value = "**P**")
+
+tbl_summary(
+	nlsy,
+	by = sex_cat,
+	include = c(starts_with("sleep"),
+		region_cat,sex_cat, race_eth_cat,income
+	),
+	label = list(
+		region_cat ~ "Region",
+		race_eth_cat ~ "Race/Ethnicity",
+		income ~ "Income",
+		sleep_wkdy ~ "Sleep on the Weekday",
+		sleep_wknd ~ "Sleep on the weekend"
+	),
+		statistic= list(starts_with("sleep") ~ "min =
+										{min}; max ={max}",
+										income ~ "{p10} to {p90}"),
+	digits= list(starts_with("sleep") ~ c(1,1),
+							 income ~ c(3,3))
+	)
+
+tbl_summary(nlsy,
+						by=sex_cat,
+						include = c(starts_with("sleep"),
+												region_cat,
+												race_eth_cat,
+												income),
+
+						label = list(region_cat ~ "Region",
+													race_eth_cat ~ "Race/Ethnicity",
+													income ~ "Income",
+													sleep_wkdy ~ "Sleep on the Weekday",
+													sleep_wknd ~ "Sleep on the weekend"))|>
+	modify_table_styling(
+		columns = label,
+		rows = label == "Race/ethnicity",
+		footnote = "see https://www.nlsinfo.org/content/cohorts/nlsy79/topical-guide/household/race-ethnicity-immigration-data"
+	)
 
 
