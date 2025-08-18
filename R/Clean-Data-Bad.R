@@ -1,10 +1,13 @@
+install.packages("dplyr", "tidyverse")
+library(dplyr)
+library(tidyverse)
 nlsy_cols <- c("glasses", "eyesight", "sleep_wkdy", "sleep_wknd",
 							 "id", "nsibs", "samp", "race_eth", "sex", "region",
 							 "income", "res_1980", "res_2002", "age_bir")
 
 library(tidyverse)
-setwd("~/Documents/Teaching/Emory/epi590r-inclass/data/raw/")
-nlsy <- read_csv("nlsy.csv",
+setwd("C:/Users/dano7/OneDrive/Documents/Epi590R-ClassActivity/Data/Raw")
+nlsy <- read_csv("nlsy",
 								 na = c("-1", "-2", "-3", "-4", "-5", "-998"),
 								 skip = 1, col_names = nlsy_cols)
 
