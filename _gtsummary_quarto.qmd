@@ -31,15 +31,21 @@ nlsy <- read_csv(here::here("data", "raw", "nlsy.csv"),
 # Customization of `tbl_summary()`
 
 ```{r}
- #| label: tbl-one
- #| tbl-cap: "This table shows the characteristics of the participants in the NLSY study"
+#| label: tbl-one
+#| tbl-cap: "This table shows the characteristics of the participants in the NLSY study"
 tbl_summary(
   nlsy,
   by = sex_cat,
   include = c(race_eth_cat, region_cat,
               eyesight_cat, glasses, age_bir))
-```
 
+median_sleep <- median (nlsy$sleep_wknd, na.rm=TRUE)
+median_sleep
+
+
+```
+The median amount of sleep obtained by participants was `r median_sleep`
+The average number of sleep obtained by participants was `r median(nlsy$sleep_wknd, na.rm=TRUE) `
 ```{r}
 tbl_summary(
   nlsy,
