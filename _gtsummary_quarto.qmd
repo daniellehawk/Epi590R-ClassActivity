@@ -31,7 +31,7 @@ nlsy <- read_csv(here::here("data", "raw", "nlsy.csv"),
 # Customization of `tbl_summary()`
 
 ```{r}
-#| label: tbl-one
+#| label: tbl-1
 #| tbl-cap: "This table shows the characteristics of the participants in the NLSY study"
 tbl_summary(
   nlsy,
@@ -39,13 +39,13 @@ tbl_summary(
   include = c(race_eth_cat, region_cat,
               eyesight_cat, glasses, age_bir))
 
-median_sleep <- median (nlsy$sleep_wknd, na.rm=TRUE)
+median_sleep <- median(nlsy$sleep_wknd, na.rm=TRUE)
+
 median_sleep
-
-
 ```
-The median amount of sleep obtained by participants was `r median_sleep`
-The average number of sleep obtained by participants was `r median(nlsy$sleep_wknd, na.rm=TRUE) `
+
+The median amount of sleep received was`r median_sleep` hours
+The median amount of sleep received was `r median(nlsy$sleep_wknd, na.rm=TRUE)`
 ```{r}
 tbl_summary(
   nlsy,
@@ -68,5 +68,47 @@ tbl_summary(
   by = sex_cat,
   include = c(sex_cat, race_eth_cat, region_cat,
               eyesight_cat, glasses, age_bir))
+```
+
+#New chunk with Table 1 stratified by sex
+
+```{r}
+#| label: tbl-sex
+#| tbl-cap: "Descriptive statistics"
+table_sex <- tbl_summary(
+  nlsy,
+  by = sex_cat,
+  include = c(race_eth_cat, region_cat,
+              eyesight_cat, glasses, age_bir,)) |> 
+  add_overall(last = TRUE)
+table_sex
+```
+
+```{r}
+inline_text(table_sex, variable= "age_bir", column = stat_1)
+```
+```{r}
+tbl_summary(
+  nlsy,
+  by = sex_cat,
+  include = c(sex_cat, race_eth_cat, region_cat,
+              eyesight_cat, glasses, age_bir))
+```
+
+#New chunk with Table 1
+
+```{r}
+#| label: tbl-sex-sleep
+#| tbl-cap: "Descriptive statistics"
+table_sex_sleep <- tbl_summary(
+  nlsy,
+  by = sex_cat,
+  include = c(sleep_wknd,race_eth_cat, region_cat,
+              eyesight_cat, glasses, age_bir)) |> 
+  add_overall(last = TRUE)
+table_sex_sleep
+```
+```{r}
+inline_text(table_sex_sleep, variable="sleep_wknd", column= stat_0)
 ```
 
