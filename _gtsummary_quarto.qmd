@@ -5,6 +5,7 @@ format:
     theme: yeti
 execute:
       eval: true
+      echo: false
       error: true
 ---
 
@@ -30,10 +31,12 @@ nlsy <- read_csv(here::here("data", "raw", "nlsy.csv"),
 # Customization of `tbl_summary()`
 
 ```{r}
+ #| label: tbl-one
+ #| tbl-cap: "This table shows the characteristics of the participants in the NLSY study"
 tbl_summary(
   nlsy,
   by = sex_cat,
-  include = c(sex_cat, race_eth_cat, region_cat,
+  include = c(race_eth_cat, region_cat,
               eyesight_cat, glasses, age_bir))
 ```
 
